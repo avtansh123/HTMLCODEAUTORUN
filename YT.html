@@ -14,7 +14,7 @@
 
       function getRandomTime(duration) {
         var min = 5; // minimum time in seconds
-        var max = Math.min(duration, 40); // maximum time in seconds, capped at video duration
+        var max = Math.min(min, 40); // maximum time in seconds, capped at video duration
         return Math.floor(Math.random() * (max - min + 1)) + min;
       }
 
