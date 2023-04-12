@@ -1,0 +1,16 @@
+name: Refresh Website
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Refresh
+        run: |
+          curl -H 'Cache-Control: no-cache' https://avtansh123.github.io/HTMLCODEAUTORUN/YT.html
