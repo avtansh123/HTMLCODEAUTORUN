@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>YouTube Video Player</title>
+  </head>
+  <body>
+    <div id="player"></div>
+    <script>
+      // 1. Load the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 2. Replace the 'player' element with an <iframe> and
+      //    YouTube player after the API code downloads.
+      var player;
+	var playCount=0;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '360',
+          width: '640',
+          videoId: 'x1BbHiWwYTo',
+          playerVars: {
+            'autoplay': 1,
+		'mute': 1,
+            'controls': 1,
+            'loop': 1,
+            'rel': 0,
+            'showinfo': 0,
+            'modestbranding': 1
+          },
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+      }
+
+      // 3. The API calls this function when the player's state changes.
+      //    The function indicates that when playing a video (state=1),
+      //    the player should play for six seconds and then stop.
+      var done = false;
+      function onPlayerStateChange(event) {
+  		if (event.data == YT.PlayerState.PLAYING && !done) {
+   	 		setTimeout(function() {
+    	 		 player.stopVideo();
+			location.reload(true);
+     			 playCount++;
+     			 if (playCount < 1000) {
+      		  player.playVideo();
+      		 }
+    			}, 50000);
+  	 	      done = true;
+  		 }
+		}
+      function stopVideo() {
+        player.stopVideo();
+      }
+     function onPlayerReady(event) {
+     // Do something when the player is ready to play, such as start playing the video.
+      event.target.playVideo();
+     }
+    </script>
+  </body>
+</html>
