@@ -47,6 +47,7 @@
   		if (event.data == YT.PlayerState.PLAYING && !done) {
    	 		setTimeout(function() {
     	 		 player.stopVideo();
+			location.reload(true);
      			 playCount++;
      			 if (playCount < 1000) {
       		  player.playVideo();
