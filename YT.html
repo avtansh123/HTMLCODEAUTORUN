@@ -7,32 +7,29 @@
   <body>
     <div id="player"></div>
     <script>
-      var videos = ['x1BbHiWwYTo', 'q7xkbrlF6XA'];
-      var currentIndex = 0;
-      var playCount = 0;
+      // Video IDs array
+      var videoIds = ['q7xkbrlF6XA', 'kEkAC1NGpR0'];
+
+      // Load the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // Replace the 'player' element with an <iframe> and
+      // YouTube player after the API code downloads.
       var player;
-
-      function getRandomTime(duration) {
-        var min = 5; // minimum time in seconds
-        var max = Math.min(min, 40); // maximum time in seconds, capped at video duration
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-      }
-
-      function loadVideo() {
-        var videoId = videos[currentIndex];
-        player.loadVideoById(videoId, 0, "large");
-        player.playVideo();
-      }
-
+      var currentVideo = 0;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '360',
           width: '640',
-          videoId: '',
+          videoId: videoIds[currentVideo],
           playerVars: {
             'autoplay': 1,
             'mute': 1,
             'controls': 1,
+            'loop': 1,
             'rel': 0,
             'showinfo': 0,
             'modestbranding': 1
@@ -44,28 +41,21 @@
         });
       }
 
-      function onPlayerReady(event) {
-        loadVideo();
-      }
-
+      // The API calls this function when the player's state changes.
+      // When the video finishes, it starts playing the next one in the loop.
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.ENDED) {
-          var time = 30;
-          setTimeout(function() {
-            player.stopVideo();
-            playCount++;
-            if (playCount < 2) { // play each video 3 times
-              currentIndex = (currentIndex + 1) % videos.length;
-              loadVideo();
-            }
-            else {
-              location.reload(true);
-            }
-          }, time * 1000);
+          currentVideo++;
+          if (currentVideo >= videoIds.length) {
+            currentVideo = 0;
+          }
+          player.loadVideoById(videoIds[currentVideo]);
         }
       }
 
+      function onPlayerReady(event) {
+        event.target.playVideo();
+      }
     </script>
-    <script src="https://www.youtube.com/iframe_api"></script>
   </body>
 </html>
