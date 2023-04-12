@@ -50,8 +50,7 @@
 
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.ENDED) {
-          var duration = player.getDuration();
-          var time = getRandomTime(duration);
+          var time = 30;
           setTimeout(function() {
             player.stopVideo();
             playCount++;
